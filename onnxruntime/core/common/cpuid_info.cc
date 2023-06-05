@@ -136,9 +136,6 @@ void CPUIDInfo::ArmLinuxInit() {
     LOGS_DEFAULT(WARNING) << "Failed to init pytorch cpuinfo library, may cause CPU EP performance degradation due to undetected CPU features.";
     return;
   }
-#else
-  pytorch_cpuinfo_init_ = false;
-#endif
 
   if (pytorch_cpuinfo_init_) {
     is_hybrid_ = cpuinfo_get_uarchs_count() > 1;
@@ -166,6 +163,11 @@ void CPUIDInfo::ArmLinuxInit() {
   } else {
     has_arm_neon_dot_ = ((getauxval(AT_HWCAP) & HWCAP_ASIMDDP) != 0);
   }
+#else
+  pytorch_cpuinfo_init_ = false;
+  has_arm_neon_dot_ = ((getauxval(AT_HWCAP) & HWCAP_ASIMDDP) != 0);
+  has_fp16_ |= has_arm_neon_dot_;
+#endif
 }
 
 #elif defined(_WIN32)
