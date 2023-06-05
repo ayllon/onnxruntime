@@ -11,12 +11,16 @@ class DeprecatedNodeIndexAndKernelDefHash(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsDeprecatedNodeIndexAndKernelDefHash(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = DeprecatedNodeIndexAndKernelDefHash()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsDeprecatedNodeIndexAndKernelDefHash(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def DeprecatedNodeIndexAndKernelDefHashBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -40,6 +44,14 @@ class DeprecatedNodeIndexAndKernelDefHash(object):
         return 0
 
 def DeprecatedNodeIndexAndKernelDefHashStart(builder): builder.StartObject(2)
+def Start(builder):
+    return DeprecatedNodeIndexAndKernelDefHashStart(builder)
 def DeprecatedNodeIndexAndKernelDefHashAddNodeIndex(builder, nodeIndex): builder.PrependUint32Slot(0, nodeIndex, 0)
+def AddNodeIndex(builder, nodeIndex):
+    return DeprecatedNodeIndexAndKernelDefHashAddNodeIndex(builder, nodeIndex)
 def DeprecatedNodeIndexAndKernelDefHashAddKernelDefHash(builder, kernelDefHash): builder.PrependUint64Slot(1, kernelDefHash, 0)
+def AddKernelDefHash(builder, kernelDefHash):
+    return DeprecatedNodeIndexAndKernelDefHashAddKernelDefHash(builder, kernelDefHash)
 def DeprecatedNodeIndexAndKernelDefHashEnd(builder): return builder.EndObject()
+def End(builder):
+    return DeprecatedNodeIndexAndKernelDefHashEnd(builder)

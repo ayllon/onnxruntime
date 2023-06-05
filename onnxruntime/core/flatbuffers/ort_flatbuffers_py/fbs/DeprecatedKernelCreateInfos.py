@@ -11,12 +11,16 @@ class DeprecatedKernelCreateInfos(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsDeprecatedKernelCreateInfos(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = DeprecatedKernelCreateInfos()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsDeprecatedKernelCreateInfos(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def DeprecatedKernelCreateInfosBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -80,8 +84,20 @@ class DeprecatedKernelCreateInfos(object):
         return o == 0
 
 def DeprecatedKernelCreateInfosStart(builder): builder.StartObject(2)
+def Start(builder):
+    return DeprecatedKernelCreateInfosStart(builder)
 def DeprecatedKernelCreateInfosAddNodeIndices(builder, nodeIndices): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(nodeIndices), 0)
+def AddNodeIndices(builder, nodeIndices):
+    return DeprecatedKernelCreateInfosAddNodeIndices(builder, nodeIndices)
 def DeprecatedKernelCreateInfosStartNodeIndicesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartNodeIndicesVector(builder, numElems):
+    return DeprecatedKernelCreateInfosStartNodeIndicesVector(builder, numElems)
 def DeprecatedKernelCreateInfosAddKernelDefHashes(builder, kernelDefHashes): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernelDefHashes), 0)
+def AddKernelDefHashes(builder, kernelDefHashes):
+    return DeprecatedKernelCreateInfosAddKernelDefHashes(builder, kernelDefHashes)
 def DeprecatedKernelCreateInfosStartKernelDefHashesVector(builder, numElems): return builder.StartVector(8, numElems, 8)
+def StartKernelDefHashesVector(builder, numElems):
+    return DeprecatedKernelCreateInfosStartKernelDefHashesVector(builder, numElems)
 def DeprecatedKernelCreateInfosEnd(builder): return builder.EndObject()
+def End(builder):
+    return DeprecatedKernelCreateInfosEnd(builder)

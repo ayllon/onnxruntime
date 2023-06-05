@@ -10,12 +10,16 @@ class Tensor(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsTensor(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = Tensor()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsTensor(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def TensorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -120,13 +124,35 @@ class Tensor(object):
         return o == 0
 
 def TensorStart(builder): builder.StartObject(6)
+def Start(builder):
+    return TensorStart(builder)
 def TensorAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def AddName(builder, name):
+    return TensorAddName(builder, name)
 def TensorAddDocString(builder, docString): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(docString), 0)
+def AddDocString(builder, docString):
+    return TensorAddDocString(builder, docString)
 def TensorAddDims(builder, dims): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dims), 0)
+def AddDims(builder, dims):
+    return TensorAddDims(builder, dims)
 def TensorStartDimsVector(builder, numElems): return builder.StartVector(8, numElems, 8)
+def StartDimsVector(builder, numElems):
+    return TensorStartDimsVector(builder, numElems)
 def TensorAddDataType(builder, dataType): builder.PrependInt32Slot(3, dataType, 0)
+def AddDataType(builder, dataType):
+    return TensorAddDataType(builder, dataType)
 def TensorAddRawData(builder, rawData): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(rawData), 0)
+def AddRawData(builder, rawData):
+    return TensorAddRawData(builder, rawData)
 def TensorStartRawDataVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def StartRawDataVector(builder, numElems):
+    return TensorStartRawDataVector(builder, numElems)
 def TensorAddStringData(builder, stringData): builder.PrependUOffsetTRelativeSlot(5, flatbuffers.number_types.UOffsetTFlags.py_type(stringData), 0)
+def AddStringData(builder, stringData):
+    return TensorAddStringData(builder, stringData)
 def TensorStartStringDataVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartStringDataVector(builder, numElems):
+    return TensorStartStringDataVector(builder, numElems)
 def TensorEnd(builder): return builder.EndObject()
+def End(builder):
+    return TensorEnd(builder)

@@ -10,12 +10,16 @@ class SparseTensor(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsSparseTensor(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = SparseTensor()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsSparseTensor(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def SparseTensorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -74,8 +78,20 @@ class SparseTensor(object):
         return o == 0
 
 def SparseTensorStart(builder): builder.StartObject(3)
+def Start(builder):
+    return SparseTensorStart(builder)
 def SparseTensorAddValues(builder, values): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(values), 0)
+def AddValues(builder, values):
+    return SparseTensorAddValues(builder, values)
 def SparseTensorAddIndices(builder, indices): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(indices), 0)
+def AddIndices(builder, indices):
+    return SparseTensorAddIndices(builder, indices)
 def SparseTensorAddDims(builder, dims): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dims), 0)
+def AddDims(builder, dims):
+    return SparseTensorAddDims(builder, dims)
 def SparseTensorStartDimsVector(builder, numElems): return builder.StartVector(8, numElems, 8)
+def StartDimsVector(builder, numElems):
+    return SparseTensorStartDimsVector(builder, numElems)
 def SparseTensorEnd(builder): return builder.EndObject()
+def End(builder):
+    return SparseTensorEnd(builder)

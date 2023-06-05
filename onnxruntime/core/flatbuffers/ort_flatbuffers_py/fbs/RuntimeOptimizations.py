@@ -10,12 +10,16 @@ class RuntimeOptimizations(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsRuntimeOptimizations(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = RuntimeOptimizations()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsRuntimeOptimizations(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def RuntimeOptimizationsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -51,6 +55,14 @@ class RuntimeOptimizations(object):
         return o == 0
 
 def RuntimeOptimizationsStart(builder): builder.StartObject(1)
+def Start(builder):
+    return RuntimeOptimizationsStart(builder)
 def RuntimeOptimizationsAddRecords(builder, records): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(records), 0)
+def AddRecords(builder, records):
+    return RuntimeOptimizationsAddRecords(builder, records)
 def RuntimeOptimizationsStartRecordsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartRecordsVector(builder, numElems):
+    return RuntimeOptimizationsStartRecordsVector(builder, numElems)
 def RuntimeOptimizationsEnd(builder): return builder.EndObject()
+def End(builder):
+    return RuntimeOptimizationsEnd(builder)
