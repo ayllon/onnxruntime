@@ -64,7 +64,7 @@ if (onnxruntime_BUILD_BENCHMARKS)
   )
 endif()
 
-if (NOT WIN32)
+if (FALSE AND NOT WIN32)
     FetchContent_Declare(
     google_nsync
     URL ${DEP_URL_google_nsync}
@@ -256,7 +256,7 @@ if (onnxruntime_BUILD_BENCHMARKS)
   onnxruntime_fetchcontent_makeavailable(google_benchmark)
 endif()
 
-if (NOT WIN32)
+if (FALSE AND NOT WIN32)
   #nsync tests failed on Mac Build
   set(NSYNC_ENABLE_TESTS OFF CACHE BOOL "" FORCE)
   onnxruntime_fetchcontent_makeavailable(google_nsync)

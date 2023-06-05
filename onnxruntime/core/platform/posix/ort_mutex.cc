@@ -27,7 +27,7 @@ void OrtCondVar::timed_wait_impl(std::unique_lock<OrtMutex>& lk,
     abs_deadline.tv_sec = ts_sec_max;
     abs_deadline.tv_nsec = 999999999;
   }
-  nsync::nsync_cv_wait_with_deadline(&native_cv_object, lk.mutex()->native_handle(), abs_deadline, nullptr);
+  pthread_cond_timedwait(&native_cv_object, lk.mutex()->native_handle(), &abs_deadline);
 }
 
 void OrtCondVar::wait(std::unique_lock<OrtMutex>& lk) {
@@ -36,7 +36,7 @@ void OrtCondVar::wait(std::unique_lock<OrtMutex>& lk) {
     ORT_THROW("OrtCondVar wait failed: mutex not locked");
   }
 #endif
-  nsync::nsync_cv_wait(&native_cv_object, lk.mutex()->native_handle());
+  pthread_cond_wait(&native_cv_object, lk.mutex()->native_handle());
 }
 
 }  // namespace onnxruntime
