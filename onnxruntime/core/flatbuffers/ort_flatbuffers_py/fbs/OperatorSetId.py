@@ -10,12 +10,16 @@ class OperatorSetId(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsOperatorSetId(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = OperatorSetId()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsOperatorSetId(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def OperatorSetIdBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -39,6 +43,14 @@ class OperatorSetId(object):
         return 0
 
 def OperatorSetIdStart(builder): builder.StartObject(2)
+def Start(builder):
+    return OperatorSetIdStart(builder)
 def OperatorSetIdAddDomain(builder, domain): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(domain), 0)
+def AddDomain(builder, domain):
+    return OperatorSetIdAddDomain(builder, domain)
 def OperatorSetIdAddVersion(builder, version): builder.PrependInt64Slot(1, version, 0)
+def AddVersion(builder, version):
+    return OperatorSetIdAddVersion(builder, version)
 def OperatorSetIdEnd(builder): return builder.EndObject()
+def End(builder):
+    return OperatorSetIdEnd(builder)

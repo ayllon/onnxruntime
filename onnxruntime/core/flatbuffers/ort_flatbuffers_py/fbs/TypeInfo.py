@@ -10,12 +10,16 @@ class TypeInfo(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsTypeInfo(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TypeInfo()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsTypeInfo(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def TypeInfoBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -49,7 +53,17 @@ class TypeInfo(object):
         return None
 
 def TypeInfoStart(builder): builder.StartObject(3)
+def Start(builder):
+    return TypeInfoStart(builder)
 def TypeInfoAddDenotation(builder, denotation): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(denotation), 0)
+def AddDenotation(builder, denotation):
+    return TypeInfoAddDenotation(builder, denotation)
 def TypeInfoAddValueType(builder, valueType): builder.PrependUint8Slot(1, valueType, 0)
+def AddValueType(builder, valueType):
+    return TypeInfoAddValueType(builder, valueType)
 def TypeInfoAddValue(builder, value): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(value), 0)
+def AddValue(builder, value):
+    return TypeInfoAddValue(builder, value)
 def TypeInfoEnd(builder): return builder.EndObject()
+def End(builder):
+    return TypeInfoEnd(builder)

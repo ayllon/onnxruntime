@@ -10,12 +10,16 @@ class Dimension(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsDimension(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = Dimension()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsDimension(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def DimensionBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -43,6 +47,14 @@ class Dimension(object):
         return None
 
 def DimensionStart(builder): builder.StartObject(2)
+def Start(builder):
+    return DimensionStart(builder)
 def DimensionAddValue(builder, value): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(value), 0)
+def AddValue(builder, value):
+    return DimensionAddValue(builder, value)
 def DimensionAddDenotation(builder, denotation): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(denotation), 0)
+def AddDenotation(builder, denotation):
+    return DimensionAddDenotation(builder, denotation)
 def DimensionEnd(builder): return builder.EndObject()
+def End(builder):
+    return DimensionEnd(builder)

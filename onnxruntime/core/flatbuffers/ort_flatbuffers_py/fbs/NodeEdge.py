@@ -10,12 +10,16 @@ class NodeEdge(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsNodeEdge(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = NodeEdge()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsNodeEdge(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def NodeEdgeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x4F\x52\x54\x4D", size_prefixed=size_prefixed)
@@ -80,9 +84,23 @@ class NodeEdge(object):
         return o == 0
 
 def NodeEdgeStart(builder): builder.StartObject(3)
+def Start(builder):
+    return NodeEdgeStart(builder)
 def NodeEdgeAddNodeIndex(builder, nodeIndex): builder.PrependUint32Slot(0, nodeIndex, 0)
+def AddNodeIndex(builder, nodeIndex):
+    return NodeEdgeAddNodeIndex(builder, nodeIndex)
 def NodeEdgeAddInputEdges(builder, inputEdges): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(inputEdges), 0)
+def AddInputEdges(builder, inputEdges):
+    return NodeEdgeAddInputEdges(builder, inputEdges)
 def NodeEdgeStartInputEdgesVector(builder, numElems): return builder.StartVector(12, numElems, 4)
+def StartInputEdgesVector(builder, numElems):
+    return NodeEdgeStartInputEdgesVector(builder, numElems)
 def NodeEdgeAddOutputEdges(builder, outputEdges): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(outputEdges), 0)
+def AddOutputEdges(builder, outputEdges):
+    return NodeEdgeAddOutputEdges(builder, outputEdges)
 def NodeEdgeStartOutputEdgesVector(builder, numElems): return builder.StartVector(12, numElems, 4)
+def StartOutputEdgesVector(builder, numElems):
+    return NodeEdgeStartOutputEdgesVector(builder, numElems)
 def NodeEdgeEnd(builder): return builder.EndObject()
+def End(builder):
+    return NodeEdgeEnd(builder)
