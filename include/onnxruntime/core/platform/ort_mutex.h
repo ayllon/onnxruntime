@@ -102,13 +102,13 @@ std::cv_status OrtCondVar::wait_for(std::unique_lock<OrtMutex>& cond_mutex,
 }
 }  // namespace onnxruntime
 #else
-#include "nsync.h"
+#include <pthread.h>
 #include <mutex>               //for unique_lock
 #include <condition_variable>  //for cv_status
 namespace onnxruntime {
 
 class OrtMutex {
-  nsync::nsync_mu data_ = NSYNC_MU_INIT;
+  pthread_mutex_t data_ = PTHREAD_MUTEX_INITIALIZER;
 
  public:
   constexpr OrtMutex() = default;
@@ -116,16 +116,16 @@ class OrtMutex {
   OrtMutex(const OrtMutex&) = delete;
   OrtMutex& operator=(const OrtMutex&) = delete;
 
-  void lock() { nsync::nsync_mu_lock(&data_); }
-  bool try_lock() noexcept { return nsync::nsync_mu_trylock(&data_) == 0; }
-  void unlock() noexcept { nsync::nsync_mu_unlock(&data_); }
+  void lock() { pthread_mutex_lock(&data_); }
+  bool try_lock() noexcept { return pthread_mutex_lock(&data_) == 0; }
+  void unlock() noexcept { pthread_mutex_unlock(&data_); }
 
-  using native_handle_type = nsync::nsync_mu*;
+  using native_handle_type = pthread_mutex_t*;
   native_handle_type native_handle() { return &data_; }
 };
 
 class OrtCondVar {
-  nsync::nsync_cv native_cv_object = NSYNC_CV_INIT;
+  pthread_cond_t native_cv_object = PTHREAD_COND_INITIALIZER;
 
  public:
   constexpr OrtCondVar() noexcept = default;
@@ -134,8 +134,8 @@ class OrtCondVar {
   OrtCondVar(const OrtCondVar&) = delete;
   OrtCondVar& operator=(const OrtCondVar&) = delete;
 
-  void notify_one() noexcept { nsync::nsync_cv_signal(&native_cv_object); }
-  void notify_all() noexcept { nsync::nsync_cv_broadcast(&native_cv_object); }
+  void notify_one() noexcept { pthread_cond_signal(&native_cv_object); }
+  void notify_all() noexcept { pthread_cond_broadcast(&native_cv_object); }
 
   void wait(std::unique_lock<OrtMutex>& lk);
   template <class _Predicate>
@@ -151,7 +151,7 @@ class OrtCondVar {
    */
   template <class Rep, class Period>
   std::cv_status wait_for(std::unique_lock<OrtMutex>& cond_mutex, const std::chrono::duration<Rep, Period>& rel_time);
-  using native_handle_type = nsync::nsync_cv*;
+  using native_handle_type = pthread_cond_t*;
   native_handle_type native_handle() { return &native_cv_object; }
 
  private:
