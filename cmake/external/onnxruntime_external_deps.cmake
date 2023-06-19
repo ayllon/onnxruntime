@@ -282,14 +282,8 @@ else()
   )
 endif()
 
-FetchContent_Declare(
-    safeint
-    URL ${DEP_URL_safeint}
-    URL_HASH SHA1=${DEP_SHA1_safeint}
-)
-
 # The next line will generate an error message "fatal: not a git repository", but it is ok. It is from flatbuffers
-onnxruntime_fetchcontent_makeavailable(nlohmann_json mp11 re2 safeint GSL flatbuffers)
+onnxruntime_fetchcontent_makeavailable(nlohmann_json mp11 re2 GSL flatbuffers)
 if(NOT flatbuffers_FOUND)
   if(NOT TARGET flatbuffers::flatbuffers)
     add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
@@ -413,7 +407,7 @@ set(GSL_TARGET "Microsoft.GSL::GSL")
 set(GSL_INCLUDE_DIR "$<TARGET_PROPERTY:${GSL_TARGET},INTERFACE_INCLUDE_DIRECTORIES>")
 
 add_library(safeint_interface INTERFACE)
-target_include_directories(safeint_interface INTERFACE ${safeint_SOURCE_DIR})
+target_include_directories(safeint_interface INTERFACE /usr/include/SafeInt)
 
 # XNNPACK EP
 if (onnxruntime_USE_XNNPACK)
