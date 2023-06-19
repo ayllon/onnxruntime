@@ -16,6 +16,8 @@
 #include "orttraining/training_ops/cpu/tensor/gather_elements_grad_impl.h"
 #endif
 
+#pragma GCC diagnostic ignored "-Warray-bounds"
+
 namespace onnxruntime {
 
 namespace op_kernel_type_control {

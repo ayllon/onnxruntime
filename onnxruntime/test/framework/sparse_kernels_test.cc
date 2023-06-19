@@ -27,6 +27,8 @@
 #include "core/util/math_cpuonly.h"
 #include <Eigen/SparseCore>
 
+#pragma GCC diagnostic ignored "-Wdangling-reference"
+
 using namespace ONNX_NAMESPACE;
 using namespace onnxruntime::common;
 
