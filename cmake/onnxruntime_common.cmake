@@ -107,7 +107,7 @@ if(NOT onnxruntime_DISABLE_ABSEIL)
   endif()
 endif()
 
-onnxruntime_add_include_to_target(onnxruntime_common date_interface)
+onnxruntime_add_include_to_target(onnxruntime_common date::date)
 target_include_directories(onnxruntime_common
     PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${ONNXRUNTIME_ROOT} ${eigen_INCLUDE_DIRS}
     # propagate include directories of dependencies that are part of public interface
