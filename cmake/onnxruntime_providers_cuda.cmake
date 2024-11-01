@@ -188,6 +188,7 @@
     # ${CMAKE_CURRENT_BINARY_DIR} is so that #include "onnxruntime_config.h" inside tensor_shape.h is found
     set_target_properties(${target} PROPERTIES LINKER_LANGUAGE CUDA)
     set_target_properties(${target} PROPERTIES FOLDER "ONNXRuntime")
+    set_target_properties(${target} PROPERTIES VERSION ${ORT_VERSION})
 
     if (onnxruntime_ENABLE_CUDA_PROFILING) # configure cupti for cuda profiling
       target_link_libraries(${target} PRIVATE CUDA::cupti)
