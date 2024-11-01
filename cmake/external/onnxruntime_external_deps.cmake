@@ -238,20 +238,6 @@ else()
   set(CPUINFO_SUPPORTED FALSE)
 endif()
 
-# xnnpack depends on clog
-# Android build should use the system's log library instead of clog
-if ((CPUINFO_SUPPORTED OR onnxruntime_USE_XNNPACK) AND NOT ANDROID)
-  set(CLOG_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-  FetchContent_Declare(
-    pytorch_clog
-    URL ${DEP_URL_pytorch_cpuinfo}
-    URL_HASH SHA1=${DEP_SHA1_pytorch_cpuinfo}
-    SOURCE_SUBDIR deps/clog
-  )
-  set(ONNXRUNTIME_CLOG_PROJ pytorch_clog)
-  set(ONNXRUNTIME_CLOG_TARGET_NAME clog)
-endif()
-
 if (CPUINFO_SUPPORTED)
   if (CMAKE_SYSTEM_NAME STREQUAL "iOS")
     set(IOS ON CACHE INTERNAL "")
@@ -270,6 +256,7 @@ if (CPUINFO_SUPPORTED)
   set(CPUINFO_BUILD_MOCK_TESTS OFF CACHE INTERNAL "")
   set(CPUINFO_BUILD_BENCHMARKS OFF CACHE INTERNAL "")
 
+  find_package(cpuinfo REQUIRED)
   FetchContent_Declare(
     pytorch_cpuinfo
     URL ${DEP_URL_pytorch_cpuinfo}
@@ -456,7 +443,7 @@ endif()
 #onnxruntime_EXTERNAL_LIBRARIES could contain onnx, onnx_proto,libprotobuf, cuda/cudnn,
 # dnnl/mklml, onnxruntime_codegen_tvm, tvm and pthread
 # pthread is always at the last
-set(onnxruntime_EXTERNAL_LIBRARIES ${onnxruntime_EXTERNAL_LIBRARIES_XNNPACK} nlohmann_json::nlohmann_json onnx onnx_proto ${PROTOBUF_LIB} re2::re2 Boost::boost safeint_interface flatbuffers::flatbuffers ${GSL_TARGET} ${ABSEIL_LIBS} date::date ${ONNXRUNTIME_CLOG_TARGET_NAME})
+set(onnxruntime_EXTERNAL_LIBRARIES ${onnxruntime_EXTERNAL_LIBRARIES_XNNPACK} nlohmann_json::nlohmann_json onnx onnx_proto ${PROTOBUF_LIB} re2::re2 Boost::boost safeint_interface flatbuffers::flatbuffers ${GSL_TARGET} ${ABSEIL_LIBS} date::date)
 # The source code of onnx_proto is generated, we must build this lib first before starting to compile the other source code that uses ONNX protobuf types.
 # The other libs do not have the problem. All the sources are already there. We can compile them in any order.
 set(onnxruntime_EXTERNAL_DEPENDENCIES onnx_proto flatbuffers::flatbuffers)
