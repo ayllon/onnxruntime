@@ -104,7 +104,7 @@ FetchContent_Declare(
     URL ${DEP_URL_flatbuffers}
     URL_HASH SHA1=${DEP_SHA1_flatbuffers}
     PATCH_COMMAND ${ONNXRUNTIME_FLATBUFFERS_PATCH_COMMAND}
-    FIND_PACKAGE_ARGS 1.12.0...<2.0.0 NAMES Flatbuffers
+    FIND_PACKAGE_ARGS 1.12.0...<2.0.0 NAMES FlatBuffers
 )
 
 # Download a protoc binary from Internet if needed
@@ -384,6 +384,8 @@ namespace std { using ::getenv; }
       target_compile_options(flatc PRIVATE /FI${CMAKE_BINARY_DIR}/gdk_cstdlib_wrapper.h)
     endif()
   endif()
+else()
+  add_library(flatbuffers::flatbuffers ALIAS flatbuffers::flatbuffers_shared)
 endif()
 
 if (onnxruntime_BUILD_UNIT_TESTS)

@@ -194,8 +194,8 @@ struct OptimizerGroup FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_GROUP_NAME) &&
            verifier.VerifyString(group_name()) &&
-           VerifyField<int64_t>(verifier, VT_STEP) &&
-           VerifyField<float>(verifier, VT_INITIAL_LEARNING_RATE) &&
+           VerifyField<int64_t>(verifier, VT_STEP, sizeof(int64_t)) &&
+           VerifyField<float>(verifier, VT_INITIAL_LEARNING_RATE, sizeof(float)) &&
            VerifyOffset(verifier, VT_OPTIMIZER_STATES) &&
            verifier.VerifyVector(optimizer_states()) &&
            verifier.VerifyVectorOfTables(optimizer_states()) &&
@@ -277,7 +277,7 @@ struct IntProperty FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
-           VerifyField<int64_t>(verifier, VT_VALUE) &&
+           VerifyField<int64_t>(verifier, VT_VALUE, sizeof(int64_t)) &&
            verifier.EndTable();
   }
 };
@@ -341,7 +341,7 @@ struct FloatProperty FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
-           VerifyField<float>(verifier, VT_VALUE) &&
+           VerifyField<float>(verifier, VT_VALUE, sizeof(float)) &&
            verifier.EndTable();
   }
 };
@@ -560,7 +560,7 @@ struct Checkpoint FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_VERSION) &&
+           VerifyField<int32_t>(verifier, VT_VERSION, sizeof(int32_t)) &&
            VerifyOffset(verifier, VT_MODULE_STATE) &&
            verifier.VerifyTable(module_state()) &&
            VerifyOffset(verifier, VT_OPTIMIZER_GROUPS) &&
