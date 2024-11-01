@@ -322,14 +322,6 @@ else()
   )
 endif()
 
-FetchContent_Declare(
-    safeint
-    URL ${DEP_URL_safeint}
-    URL_HASH SHA1=${DEP_SHA1_safeint}
-)
-
-# use fetch content rather than makeavailable because safeint only includes unconditional test targets
-FetchContent_Populate(safeint)
 # The next line will generate an error message "fatal: not a git repository", but it is ok. It is from flatbuffers
 onnxruntime_fetchcontent_makeavailable(utf8_range)
 # protobuf's cmake/utf8_range.cmake has the following line
@@ -451,7 +443,7 @@ set(GSL_TARGET "Microsoft.GSL::GSL")
 set(GSL_INCLUDE_DIR "$<TARGET_PROPERTY:${GSL_TARGET},INTERFACE_INCLUDE_DIRECTORIES>")
 
 add_library(safeint_interface INTERFACE)
-target_include_directories(safeint_interface INTERFACE ${safeint_SOURCE_DIR})
+target_include_directories(safeint_interface INTERFACE /usr/include/SafeInt)
 
 # XNNPACK EP
 if (onnxruntime_USE_XNNPACK)

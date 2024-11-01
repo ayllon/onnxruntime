@@ -24,6 +24,7 @@ class SafeIntExceptionHandler<onnxruntime::OnnxRuntimeException> {
 
 #define SAFEINT_EXCEPTION_HANDLER_CPP 1
 #define SafeIntDefaultExceptionHandler SafeIntExceptionHandler<onnxruntime::OnnxRuntimeException>
+#define SAFEINT_CPP_THROW noexcept(false)
 
 #if defined(__GNUC__)
 #include "onnxruntime_config.h"
