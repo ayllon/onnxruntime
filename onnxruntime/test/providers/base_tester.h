@@ -53,7 +53,11 @@ class BaseTester {
 
   // Dims variant is needed to reduce the number of overloads
   // MS compiler refuses to create a gsl::span from initializer_list especially if it contains a single element
+#ifndef DISABLE_ABSEIL
   using DimsVariant = std::variant<std::vector<int64_t>, TensorShapeVector>;
+#else
+  using DimsVariant = std::variant<TensorShapeVector>;
+#endif
 
   template <typename T>
   void AddInput(const char* name, std::initializer_list<int64_t> dims, std::initializer_list<T> values,
