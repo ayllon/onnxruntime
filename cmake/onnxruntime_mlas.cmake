@@ -401,7 +401,8 @@ else()
           set_source_files_properties(${MLAS_SRC_DIR}/power/QuantizePowerVSX.cpp PROPERTIES COMPILE_FLAGS "-mcpu=power9")
         endif()
 
-        check_cxx_compiler_flag("-mcpu=power10" HAS_POWER10)
+        #check_cxx_compiler_flag("-mcpu=power10" HAS_POWER10)
+        set(HAS_POWER10 OFF)
         if(HAS_POWER10)
           set(CMAKE_REQUIRED_FLAGS "-mcpu=power10")
           check_cxx_source_compiles("
