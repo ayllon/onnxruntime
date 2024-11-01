@@ -440,11 +440,12 @@ FetchContent_Declare(
 include(eigen)
 include(wil)
 
-if (NOT onnxruntime_MINIMAL_BUILD)
-    onnxruntime_fetchcontent_makeavailable(onnx)
-else()
-  include(onnx_minimal)
-endif()
+#if (NOT onnxruntime_MINIMAL_BUILD)
+#    onnxruntime_fetchcontent_makeavailable(onnx)
+#else()
+#  include(onnx_minimal)
+#endif()
+find_package(ONNX REQUIRED)
 
 set(GSL_TARGET "Microsoft.GSL::GSL")
 set(GSL_INCLUDE_DIR "$<TARGET_PROPERTY:${GSL_TARGET},INTERFACE_INCLUDE_DIRECTORIES>")
@@ -479,10 +480,10 @@ set(onnxruntime_EXTERNAL_LIBRARIES ${onnxruntime_EXTERNAL_LIBRARIES_XNNPACK} ${W
 # The other libs do not have the problem. All the sources are already there. We can compile them in any order.
 set(onnxruntime_EXTERNAL_DEPENDENCIES onnx_proto flatbuffers::flatbuffers)
 
-target_compile_definitions(onnx PUBLIC $<TARGET_PROPERTY:onnx_proto,INTERFACE_COMPILE_DEFINITIONS> PRIVATE "__ONNX_DISABLE_STATIC_REGISTRATION")
-if (NOT onnxruntime_USE_FULL_PROTOBUF)
-  target_compile_definitions(onnx PUBLIC "__ONNX_NO_DOC_STRINGS")
-endif()
+#target_compile_definitions(onnx PUBLIC $<TARGET_PROPERTY:onnx_proto,INTERFACE_COMPILE_DEFINITIONS> PRIVATE "__ONNX_DISABLE_STATIC_REGISTRATION")
+#if (NOT onnxruntime_USE_FULL_PROTOBUF)
+#  target_compile_definitions(onnx PUBLIC "__ONNX_NO_DOC_STRINGS")
+#endif()
 
 if (onnxruntime_RUN_ONNX_TESTS)
   add_definitions(-DORT_RUN_EXTERNAL_ONNX_TESTS)
